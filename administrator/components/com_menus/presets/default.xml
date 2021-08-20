@@ -102,6 +102,14 @@
 	</menuitem>
 
 	<menuitem
+			title="COM_MODULES_MENU_WORKFLOW"
+			type="component"
+			element="com_workflow"
+			link="index.php?option=com_workflow&amp;view=workflows&amp;extension=com_banners"
+			permission="core.manage.workflow;com_banners"
+	/>
+
+	<menuitem
 		title="MOD_MENU_MENUS"
 		type="heading"
 		icon="list"
