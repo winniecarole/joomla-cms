@@ -567,6 +567,12 @@ class JoomlaInstallerScript
 	{
 		$extensions = ExtensionHelper::getCoreExtensions();
 
+		// If we have the search package around, it may not have a manifest cache entry after upgrades from 3.x, so add it to the list
+		if (File::exists(JPATH_ROOT . '/administrator/manifests/packages/pkg_search.xml'))
+		{
+			$extensions[] = array('package', 'pkg_search', '', 0);
+		}
+
 		// Attempt to refresh manifest caches
 		$db    = Factory::getDbo();
 		$query = $db->getQuery(true)
@@ -6053,6 +6059,35 @@ class JoomlaInstallerScript
 			'/media/system/js/fields/calendar-locales/zh-CN.min.js.gz',
 			'/media/system/js/fields/calendar-locales/zh-TW.min.js',
 			'/media/system/js/fields/calendar-locales/zh-TW.min.js.gz',
+			// 4.0 from RC 5 to RC 6
+			'/media/templates/cassiopeia/js/mod_menu/menu-metismenu-es5.js',
+			'/media/templates/cassiopeia/js/mod_menu/menu-metismenu-es5.min.js',
+			'/media/templates/cassiopeia/js/mod_menu/menu-metismenu-es5.min.js.gz',
+			'/media/templates/cassiopeia/js/mod_menu/menu-metismenu.js',
+			'/media/templates/cassiopeia/js/mod_menu/menu-metismenu.min.js',
+			'/media/templates/cassiopeia/js/mod_menu/menu-metismenu.min.js.gz',
+			'/templates/cassiopeia/css/vendor/fontawesome-free/fontawesome.css',
+			'/templates/cassiopeia/css/vendor/fontawesome-free/fontawesome.min.css',
+			'/templates/cassiopeia/css/vendor/fontawesome-free/fontawesome.min.css.gz',
+			'/templates/cassiopeia/scss/vendor/fontawesome-free/fontawesome.scss',
+			// 4.0 from RC 6 to 4.0.0 (stable)
+			'/libraries/vendor/algo26-matthias/idna-convert/tests/integration/ToIdnTest.php',
+			'/libraries/vendor/algo26-matthias/idna-convert/tests/integration/ToUnicodeTest.php',
+			'/libraries/vendor/algo26-matthias/idna-convert/tests/unit/.gitkeep',
+			'/libraries/vendor/algo26-matthias/idna-convert/tests/unit/namePrepTest.php',
+			'/libraries/vendor/doctrine/inflector/docs/en/index.rst',
+			'/libraries/vendor/jakeasmith/http_build_url/tests/HttpBuildUrlTest.php',
+			'/libraries/vendor/jakeasmith/http_build_url/tests/bootstrap.php',
+			'/libraries/vendor/willdurand/negotiation/tests/Negotiation/Tests/AcceptLanguageTest.php',
+			'/libraries/vendor/willdurand/negotiation/tests/Negotiation/Tests/AcceptTest.php',
+			'/libraries/vendor/willdurand/negotiation/tests/Negotiation/Tests/BaseAcceptTest.php',
+			'/libraries/vendor/willdurand/negotiation/tests/Negotiation/Tests/CharsetNegotiatorTest.php',
+			'/libraries/vendor/willdurand/negotiation/tests/Negotiation/Tests/EncodingNegotiatorTest.php',
+			'/libraries/vendor/willdurand/negotiation/tests/Negotiation/Tests/LanguageNegotiatorTest.php',
+			'/libraries/vendor/willdurand/negotiation/tests/Negotiation/Tests/MatchTest.php',
+			'/libraries/vendor/willdurand/negotiation/tests/Negotiation/Tests/NegotiatorTest.php',
+			'/libraries/vendor/willdurand/negotiation/tests/Negotiation/Tests/TestCase.php',
+			'/libraries/vendor/willdurand/negotiation/tests/bootstrap.php',
 		);
 
 		$folders = array(
@@ -7294,6 +7329,22 @@ class JoomlaInstallerScript
 			'/administrator/components/com_admin/tmpl/profile',
 			'/administrator/components/com_admin/src/View/Profile',
 			'/administrator/components/com_admin/forms',
+			// 4.0 from RC 5 to RC 6
+			'/templates/cassiopeia/scss/vendor/fontawesome-free',
+			'/templates/cassiopeia/css/vendor/fontawesome-free',
+			'/media/templates/cassiopeia/js/mod_menu',
+			'/media/templates/cassiopeia/js',
+			'/media/templates/cassiopeia',
+			// 4.0 from RC 6 to 4.0.0 (stable)
+			'/libraries/vendor/willdurand/negotiation/tests/Negotiation/Tests',
+			'/libraries/vendor/willdurand/negotiation/tests/Negotiation',
+			'/libraries/vendor/willdurand/negotiation/tests',
+			'/libraries/vendor/jakeasmith/http_build_url/tests',
+			'/libraries/vendor/doctrine/inflector/docs/en',
+			'/libraries/vendor/doctrine/inflector/docs',
+			'/libraries/vendor/algo26-matthias/idna-convert/tests/unit',
+			'/libraries/vendor/algo26-matthias/idna-convert/tests/integration',
+			'/libraries/vendor/algo26-matthias/idna-convert/tests',
 		);
 
 		$status['files_checked'] = $files;
@@ -7340,6 +7391,18 @@ class JoomlaInstallerScript
 		}
 
 		$this->fixFilenameCasing();
+
+		/*
+		 * Needed for updates from 3.10
+		 * If com_search doesn't exist then assume we can delete the search package manifest (included in the update packages)
+		 * We deliberately check for the presence of the files in case people have previously uninstalled their search extension
+		 * but an update has put the files back. In that case it exists even if they don't believe in it!
+		 */
+		if (!File::exists(JPATH_ROOT . '/administrator/components/com_search/search.php')
+			&& File::exists(JPATH_ROOT . '/administrator/manifests/packages/pkg_search.xml'))
+		{
+			File::delete(JPATH_ROOT . '/administrator/manifests/packages/pkg_search.xml');
+		}
 
 		if ($suppressOutput === false && \count($status['folders_errors']))
 		{
