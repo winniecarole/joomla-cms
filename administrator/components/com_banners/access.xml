@@ -57,7 +57,7 @@
 			name="core.edit.state"
 			title="JACTION_EDITSTATE"
 		/>
-		
+
 		<!--acces perms perms-->
 		<action name="core.manage.workflow" title="JACTION_MANAGEWORKFLOW" />
 		<action name="core.execute.transition" title="JACTION_EXECUTETRANSITION" />
