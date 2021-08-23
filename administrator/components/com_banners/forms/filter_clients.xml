@@ -35,6 +35,17 @@
 			<option value="5">COM_BANNERS_FIELD_VALUE_DAILY</option>
 		</field>
 	</fields>
+	<field
+			name="stage"
+			type="workflowstage"
+			label="JOPTION_SELECT_STAGE"
+			onchange="this.form.submit();"
+			activeonly="true"
+			extension="com_banners"
+	>
+		<option value="">JOPTION_SELECT_STAGE</option>
+	</field>
+
 	<fields name="list">
 		<field
 			name="fullordering"
