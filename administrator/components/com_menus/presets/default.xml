@@ -102,7 +102,7 @@
 	</menuitem>
 	<!--add module workflow menu tab-->
 	<menuitem
-			title="COM_MODULES_MENU_WORKFLOW"
+			title="COM_BANNERS_MENU_WORKFLOW"
 			type="component"
 			element="com_workflow"
 			link="index.php?option=com_workflow&amp;view=workflows&amp;extension=com_banners"
