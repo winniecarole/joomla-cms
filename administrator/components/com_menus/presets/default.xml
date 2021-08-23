@@ -100,7 +100,7 @@
 			quicktask="index.php?option=com_modules&amp;view=select&amp;client_id=1"
 		/>
 	</menuitem>
-	<!--add module workflow menu tab-->
+
 
 	<menuitem
 		title="MOD_MENU_MENUS"
